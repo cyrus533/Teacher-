@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyrus Data Hub</title>
+
+    <!-- React, ReactDOM, Framer Motion, Tailwind via CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ✅ Add Babel compiler so JSX works -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState } = React;
+      const { motion } = window["framer-motion"];
+
+      function App() {
+        const [notice, setNotice] = useState(null);
+
+        const pricing = [
+          { id: 1, data: "1GB", price: "GHS 6" },
+          { id: 2, data: "2GB", price: "GHS 12" },
+          { id: 3, data: "3GB", price: "GHS 17" },
+          { id: 4, data: "4GB", price: "GHS 23" },
+          { id: 5, data: "5GB", price: "GHS 26" },
+          { id: 6, data: "6GB", price: "GHS 31" },
+          { id: 7, data: "7GB", price: "GHS 35" },
+          { id: 8, data: "8GB", price: "GHS 39" },
+          { id: 9, data: "9GB", price: "GHS 45" },
+          { id: 10, data: "10GB", price: "GHS 50" },
+        ];
+
+        return (
+          <div className="min-h-screen flex flex-col">
+            <header className="bg-white shadow-sm py-4 sticky top-0 z-20">
+              <div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-emerald-400 flex items-center justify-center text-white font-bold">
+                    CY
+                  </div>
+                  <div>
+                    <h1 className="font-bold text-lg">Cyrus Data Hub</h1>
+                    <p className="text-xs text-slate-500">
+                      Affordable data bundles
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <main className="flex-1 max-w-5xl mx-auto px-4 py-10">
+              <motion.section
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center space-y-4"
+              >
+                <h2 className="text-3xl font-extrabold">
+                  Buy MTN Data Bundles Instantly
+                </h2>
+                <p className="text-slate-600 max-w-2xl mx-auto">
+                  Choose your bundle, send payment manually via MoMo, and
+                  confirm your number below.
+                  <br />
+                  <strong>MTN users:</strong> Select “Other Networks” when
+                  sending money.
+                  <br />
+                  <strong>Vodafone users:</strong> Send directly to the displayed
+                  number.
+                </p>
+
+                <div className="bg-emerald-50 p-4 rounded-md border border-emerald-200 max-w-md mx-auto text-left text-sm">
+                  <p>
+                    <strong>Payment Instructions:</strong>
+                  </p>
+                  <ul className="list-disc ml-5 mt-2 space-y-1">
+                    <li>
+                      Dial *170# → Transfer → Send Money → Enter Recipient
+                      Number.
+                    </li>
+                    <li>
+                      Confirm transaction name as <em>Cyrus Data Hub</em>.
+                    </li>
+                  </ul>
+                </div>
+              </motion.section>
+
+              <section id="pricing" className="mt-10">
+                <h3 className="text-2xl font-bold mb-4 text-center">
+                  MTN Data Bundles
+                </h3>
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {pricing.map((p) => (
+                    <div
+                      key={p.id}
+                      className="bg-white p-6 rounded-xl shadow-sm text-center"
+                    >
+                      <div className="text-2xl font-bold">{p.data}</div>
+                      <div className="text-slate-600 mb-4">{p.price}</div>
+                      <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm w-full hover:bg-indigo-700">
+                        Select {p.data}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="mt-10 bg-white p-6 rounded-xl shadow-sm max-w-lg mx-auto">
+                <h3 className="font-semibold text-lg">Confirm Purchase</h3>
+                <p className="text-xs text-slate-500 mb-4">
+                  After sending payment, enter your number and bundle choice
+                  below.
+                </p>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setNotice({
+                      text: "✅ Thank you! Payment confirmation received.",
+                    });
+                  }}
+                  className="space-y-3"
+                >
+                  <input
+                    className="w-full border rounded px-3 py-2"
+                    placeholder="024XXXXXXXX"
+                    required
+                  />
+                  <select className="w-full border rounded px-3 py-2">
+                    {pricing.map((p) => (
+                      <option key={p.id}>
+                        {p.data} — {p.price}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="submit"
+                    className="w-full bg-emerald-600 text-white py-2 rounded-md"
+                  >
+                    Confirm Payment
+                  </button>
+                </form>
+              </section>
+
+              {notice && (
+                <div className="mt-6 bg-emerald-50 border border-emerald-200 text-emerald-700 p-3 rounded-md text-center">
+                  {notice.text}
+                </div>
+              )}
+            </main>
+
+            <footer className="bg-white border-t py-6 text-sm text-slate-600 text-center">
+              © {new Date().getFullYear()} Cyrus Data Hub — All rights reserved.
+            </footer>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
